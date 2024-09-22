@@ -33,5 +33,5 @@ This project involves creating a RESTful API for managing products, implemented 
 
 1. **Clone the repository**:
    ```bash
-   [git clone https://github.com/javiersaavedraalcala/API-Repository-Pattern-Laravel.git](https://github.com/javiersaavedraalcala/API-Repository-Pattern-Laravel.git)
+   git clone https://github.com/javiersaavedraalcala/API-Repository-Pattern-Laravel.git
    cd your_repository
