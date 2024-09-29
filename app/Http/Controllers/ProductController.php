@@ -63,15 +63,20 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $updateDetails = [
+        $updateDetails = array_filter([
             "name" => $request->name,
             "details" => $request->details
-        ];
+        ], fn($value) => !is_null($value));
 
         DB::beginTransaction();
         try {
-            $product = $this->productRepositoryInterface->update($updateDetails, $id);
+            $result = $this->productRepositoryInterface->update($updateDetails, $id);
+
+            if (!$result) {
+                return ApiResponseClass::sendResponse([], "Product not found", 404);
+            }
             DB::commit();
+
             return ApiResponseClass::sendResponse("Product updated successfully", "", 201);
         } catch (\Exception $ex) {
             return ApiResponseClass::rollback($ex);
@@ -85,6 +90,6 @@ class ProductController extends Controller
     {
         $this->productRepositoryInterface->delete($id);
 
-        return ApiResponseClass::sendResponse("Product deleted successfully", "", 204);
+        return ApiResponseClass::sendResponse("Product deleted successfully", "", 200);
     }
 }

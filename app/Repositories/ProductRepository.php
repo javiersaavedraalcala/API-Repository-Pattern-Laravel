@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
-use GuzzleHttp\Handler\Proxy;
 
 class ProductRepository implements ProductRepositoryInterface
 {
@@ -26,11 +25,22 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function update(array $data, $id)
     {
-        return Product::whereId($id)->update($data);
+        $product = Product::find($id);
+
+        if (!$product) {
+            return false;
+        }
+
+        $product->update($data);
+
+        return $product;
     }
 
     public function delete($id)
     {
-        return Product::destroy($id);
+        $product = Product::findOrFail($id);
+        $product->destroy($id);
+
+        return $product;
     }
 }
